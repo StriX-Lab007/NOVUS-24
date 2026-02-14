@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { Check, ArrowRight, ArrowLeft, Shield, Lock, Plus, Trash2, Cpu, CreditCard, User, Mail, Phone, Building, Home } from "lucide-react";
+import { Check, ArrowRight, ArrowLeft, Shield, Lock, Plus, Trash2, Cpu, CreditCard, User, Mail, Phone, Building, Home, Utensils } from "lucide-react";
 import FormInput from "../../components/FormInput";
+import FormSelect from "../../components/FormSelect";
 import UploadField from "../../components/UploadField";
 import CyberButton from "../../components/CyberButton";
 import TerminalCard from "../../components/TerminalCard";
@@ -17,6 +18,7 @@ interface Member {
     college: string;
     email: string;
     phone: string;
+    diet: string;
 }
 
 export default function RegisterPage() {
@@ -28,7 +30,8 @@ export default function RegisterPage() {
         name: "",
         college: "",
         email: "",
-        phone: ""
+        phone: "",
+        diet: ""
     });
 
     // Additional Members (Step 2)
@@ -49,7 +52,7 @@ export default function RegisterPage() {
 
     const addMember = () => {
         if (members.length < 3) {
-            setMembers([...members, { name: "", college: "", email: "", phone: "" }]);
+            setMembers([...members, { name: "", college: "", email: "", phone: "", diet: "" }]);
         }
     };
 
@@ -68,7 +71,8 @@ export default function RegisterPage() {
             leader.name.trim() !== "" &&
             leader.college.trim() !== "" &&
             leader.email.trim() !== "" &&
-            leader.phone.trim() !== "";
+            leader.phone.trim() !== "" &&
+            leader.diet !== "";
     };
 
     const areMembersValid = () => {
@@ -76,7 +80,8 @@ export default function RegisterPage() {
             m.name.trim() !== "" &&
             m.college.trim() !== "" &&
             m.email.trim() !== "" &&
-            m.phone.trim() !== ""
+            m.phone.trim() !== "" &&
+            m.diet !== ""
         );
     };
 
@@ -192,6 +197,17 @@ export default function RegisterPage() {
                                                     required
                                                     icon={<Phone size={16} className="text-neon" />}
                                                 />
+                                                <FormSelect
+                                                    label="Dietary Preference"
+                                                    value={leader.diet}
+                                                    onChange={(v) => updateLeader("diet", v)}
+                                                    required
+                                                    icon={<Utensils size={16} className="text-neon" />}
+                                                    options={[
+                                                        { value: "Veg", label: "Vegetarian 🥦" },
+                                                        { value: "Non-Veg", label: "Non-Vegetarian 🍗" }
+                                                    ]}
+                                                />
                                             </div>
                                         </div>
 
@@ -261,6 +277,17 @@ export default function RegisterPage() {
                                                             onChange={(v) => updateMember(i, "phone", v)}
                                                             required
                                                             icon={<Phone size={14} className="text-neon" />}
+                                                        />
+                                                        <FormSelect
+                                                            label="Dietary Preference"
+                                                            value={member.diet}
+                                                            onChange={(v) => updateMember(i, "diet", v)}
+                                                            required
+                                                            icon={<Utensils size={14} className="text-neon" />}
+                                                            options={[
+                                                                { value: "Veg", label: "Vegetarian 🥦" },
+                                                                { value: "Non-Veg", label: "Non-Vegetarian 🍗" }
+                                                            ]}
                                                         />
                                                     </div>
                                                 </div>

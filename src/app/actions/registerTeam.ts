@@ -3,10 +3,12 @@
 import { createClient } from "@supabase/supabase-js";
 
 // Initialize Supabase Client for Server Action
-const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+// Prioritize Service Role Key for backend operations to bypass RLS if needed, 
+// ensuring secure writes even if public policies are restrictive.
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 export async function registerTeam(formData: FormData) {
     const rawData = {
@@ -46,7 +48,8 @@ export async function registerTeam(formData: FormData) {
                 txn_id: rawData.txnId,
                 upi_id: rawData.upiId,
                 payment_proof_url: paymentProofUrl,
-                status: "PENDING", // Default status
+                status: "PENDING",
+                leader_diet: rawData.leader.diet,
             })
             .select()
             .single();
@@ -55,12 +58,13 @@ export async function registerTeam(formData: FormData) {
 
         // 3. Insert Members Data
         if (rawData.members.length > 0) {
-            const membersToInsert = rawData.members.map((m: { name: string; email: string; phone: string; college: string }) => ({
+            const membersToInsert = rawData.members.map((m: { name: string; email: string; phone: string; college: string; diet: string }) => ({
                 team_id: teamData.id,
                 name: m.name,
                 email: m.email,
                 phone: m.phone,
                 college: m.college,
+                diet: m.diet,
             }));
 
             const { error: membersError } = await supabase
