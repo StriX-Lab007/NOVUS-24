@@ -1,0 +1,28 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="neon-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="15" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <linearGradient id="neon-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00FF66" />
+      <stop offset="100%" stop-color="#00CC52" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Outer Hexagon/Shape -->
+  <path d="M256 40 L460 140 L460 372 L256 472 L52 372 L52 140 Z" 
+        stroke="#00FF66" stroke-width="8" fill="none" filter="url(#neon-glow)" opacity="0.5"/>
+  
+  <!-- Inner "N" Shape -->
+  <path d="M156 120 V392 L356 120 V392" 
+        stroke="url(#neon-grad)" stroke-width="32" stroke-linecap="round" stroke-linejoin="round" filter="url(#neon-glow)"/>
+  
+  <!-- Digital Circuit Accents -->
+  <circle cx="52" cy="140" r="8" fill="#00FF66" filter="url(#neon-glow)"/>
+  <circle cx="460" cy="372" r="8" fill="#00FF66" filter="url(#neon-glow)"/>
+  <circle cx="256" cy="40" r="8" fill="#00FF66" filter="url(#neon-glow)"/>
+</svg>
